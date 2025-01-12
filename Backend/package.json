@@ -1,0 +1,31 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@google-cloud/translate": "^8.5.0",
+    "@vitalets/google-translate-api": "^9.2.0",
+    "axios": "^1.7.9",
+    "exceljs": "^4.4.0",
+    "express": "^4.21.2",
+    "fs": "^0.0.1-security",
+    "google-translate-api": "^2.3.0",
+    "multer": "^1.4.5-lts.1",
+    "node-fetch": "^3.3.2",
+    "openai": "^4.77.4",
+    "path": "^0.12.7",
+    "sharp": "^0.33.5",
+    "tesseract.js": "^5.1.1",
+    "translate-google": "^1.5.0",
+    "transliteration": "^2.3.5",
+    "vercel": "^39.2.6",
+    "xlsx": "^0.18.5"
+  }
+}

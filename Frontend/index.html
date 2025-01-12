@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hindi to English OCR</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
+    }
+
+    h1 {
+      margin-top: 50px;
+      color: #333;
+      font-size: 2rem;
+    }
+
+    form {
+      margin: 50px auto;
+      width: 90%;
+      max-width: 500px;
+      background: #fff;
+      border: 2px dashed #ccc;
+      border-radius: 10px;
+      padding: 30px;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease-in-out;
+    }
+
+    form:hover {
+      border-color: #5a67d8;
+      box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    input[type="file"] {
+      width: 100%;
+      margin: 20px 0;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+
+    button {
+      display: inline-block;
+      background-color: #5a67d8;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: all 0.3s ease-in-out;
+    }
+
+    button:hover {
+      background-color: #434190;
+      transform: translateY(-3px);
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 1.8rem;
+        margin-top: 30px;
+      }
+
+      form {
+        padding: 20px;
+      }
+
+      input[type="file"] {
+        font-size: 0.9rem;
+        padding: 8px;
+      }
+
+      button {
+        font-size: 14px;
+        padding: 8px 16px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      form {
+        padding: 15px;
+      }
+
+      input[type="file"] {
+        font-size: 0.8rem;
+        padding: 6px;
+      }
+
+      button {
+        font-size: 12px;
+        padding: 6px 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Upload an Image</h1>
+  <form action="/process-images" method="post" enctype="multipart/form-data">
+    <input type="file" name="images" multiple />
+    <button type="submit">Upload</button>
+  </form>
+</body>
+</html>
