@@ -5,8 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const xlsx = require('xlsx');
 const sharp = require('sharp'); // For image processing
-const translate = require('translate-google'); // Translation library
-
+const translate = require('translate-google'); 
 const app = express();
 const upload = multer({ dest: path.join(__dirname, 'uploads/') });
 
@@ -41,7 +40,7 @@ app.post('/process-images', upload.array('images', 10), async (req, res) => {
         .extract({
           top: 30, // Trim 30px from the top
           left: 0,
-          width: width - 100, // Remove 100px from the right
+          width: width - 100,
           height: height - 30 - 50, // Remove 30px from top and 50px from bottom
         })
         .toFile(trimmedImagePath);
@@ -100,9 +99,29 @@ app.get('/download', (req, res) => {
         console.error('Error downloading the file:', err);
         res.status(500).send('Failed to download file.');
       } else {
-        // Clear the accumulated rows
+        // Clear rows after successful download
         rows = [];
         console.log('Excel file downloaded successfully.');
+
+        // Delete all files in the uploads folder
+        const uploadsFolder = path.join(__dirname, 'uploads');
+        fs.readdir(uploadsFolder, (err, files) => {
+          if (err) {
+            console.error('Error reading uploads folder:', err);
+            return;
+          }
+
+          files.forEach((file) => {
+            const filePath = path.join(uploadsFolder, file);
+            fs.unlink(filePath, (err) => {
+              if (err) {
+                console.error(`Error deleting file ${filePath}:`, err);
+              } else {
+                // console.log(`Deleted file: ${filePath}`);
+              }
+            });
+          });
+        });
       }
     });
   } catch (error) {
