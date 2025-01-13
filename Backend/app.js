@@ -46,11 +46,7 @@ app.post('/process-images', upload.array('images', 10), async (req, res) => {
         .toFile(trimmedImagePath);
 
       // Extract text from the trimmed image using Tesseract.js
-      const { data: { text } } = await Tesseract.recognize(trimmedImagePath, 'hin', {
-        logger: (info) => console.log(info), // Optional: Log Tesseract.js progress
-      });
-
-      console.log('Extracted text:', text);
+      const { data: { text } } = await Tesseract.recognize(trimmedImagePath, 'hin');
 
       // Translate Hindi text to English
       const lines = text.split('\n').filter(line => line.trim());
@@ -60,9 +56,8 @@ app.post('/process-images', upload.array('images', 10), async (req, res) => {
           try {
             const translatedText = await translate(hindiText, { from: 'hi', to: 'en' });
             rows.push({ Name: hindiText, Translation: translatedText, Aadhaar: '', Mobile: '' });
-            console.log(`Translated: ${hindiText} -> ${translatedText}`);
           } catch (translationError) {
-            console.error(`Error translating text: ${hindiText}`, translationError);
+            // Handle translation errors silently
           }
         }
       }
@@ -74,7 +69,6 @@ app.post('/process-images', upload.array('images', 10), async (req, res) => {
       <a href="/download">Download Excel File</a>
     `);
   } catch (error) {
-    console.error('Error processing the images:', error);
     res.status(500).send('An error occurred while processing the images.');
   }
 });
@@ -95,43 +89,32 @@ app.get('/download', (req, res) => {
     xlsx.writeFile(workbook, excelPath);
 
     res.download(excelPath, 'output.xlsx', (err) => {
-      if (err) {
-        console.error('Error downloading the file:', err);
-        res.status(500).send('Failed to download file.');
-      } else {
+      if (!err) {
         // Clear rows after successful download
         rows = [];
-        console.log('Excel file downloaded successfully.');
 
         // Delete all files in the uploads folder
         const uploadsFolder = path.join(__dirname, 'uploads');
         fs.readdir(uploadsFolder, (err, files) => {
-          if (err) {
-            console.error('Error reading uploads folder:', err);
-            return;
-          }
-
-          files.forEach((file) => {
-            const filePath = path.join(uploadsFolder, file);
-            fs.unlink(filePath, (err) => {
-              if (err) {
-                console.error(`Error deleting file ${filePath}:`, err);
-              } else {
-                // console.log(`Deleted file: ${filePath}`);
+          if (!err) {
+            files.forEach((file) => {
+              const filePath = path.join(uploadsFolder, file);
+              try{
+                fs.unlink(filePath, () => {});
+              }
+              catch(err){
+                console.log(err);
               }
             });
-          });
+          }
         });
       }
     });
   } catch (error) {
-    console.error('Error generating the Excel file:', error);
     res.status(500).send('An error occurred while generating the Excel file.');
   }
 });
 
 // Start the server
 const PORT = 3000;
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
+app.listen(PORT, () => {});
